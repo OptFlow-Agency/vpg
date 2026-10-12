@@ -1,22 +1,25 @@
 ---
 import menuIcon from '../assets/menu-icon.svg?raw';
 
+// Section anchors live on the home page; elsewhere they need to point back to it.
+const base = Astro.url.pathname === '/' ? '' : '/';
+
 const links = [
-	{ label: 'Home', href: '#top' },
-	{ label: 'Properties', href: '#properties' },
-	{ label: 'Services', href: '#services' },
-	{ label: 'About', href: '#about' },
-	{ label: 'Testimonials', href: '#testimonials' },
-	{ label: 'Contact', href: '#contact' },
+	{ label: 'Home', href: `${base}#top` },
+	{ label: 'Properties', href: '/offers' },
+	{ label: 'Services', href: `${base}#services` },
+	{ label: 'About', href: `${base}#about` },
+	{ label: 'Testimonials', href: `${base}#testimonials` },
+	{ label: 'Contact', href: `${base}#contact` },
 ];
 ---
 
 <header id="top" class="enter-down mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-6 md:px-10 lg:px-16">
-	<a href="#top" class="text-title text-lg font-semibold tracking-[0.18em]">VPG</a>
+	<a href={`${base}#top`} class="text-title text-lg font-semibold tracking-[0.18em]">VPG</a>
 
 	<nav aria-label="Primary" class="hidden items-center gap-8 text-sm font-medium md:flex lg:gap-10 lg:text-base">
 		{links.slice(1, -1).map((l) => <a href={l.href} class="link-draw text-title">{l.label}</a>)}
-		<a href="#contact" class="btn btn-solid">Contact</a>
+		<a href={`${base}#contact`} class="btn btn-solid">Contact</a>
 	</nav>
 
 	<button
@@ -39,7 +42,7 @@ const links = [
 	class="menu-panel on-dark bg-abyss text-paper fixed inset-0 z-50 flex flex-col px-5 py-6 md:hidden"
 >
 	<div class="flex items-center justify-between">
-		<a href="#top" class="text-lg font-semibold tracking-[0.18em]" data-menu-link>VPG</a>
+		<a href={`${base}#top`} class="text-lg font-semibold tracking-[0.18em]" data-menu-link>VPG</a>
 		<button type="button" id="menu-close" aria-label="Close menu" class="-mr-2 p-2">
 			<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
 				<path d="M5 5l14 14M19 5L5 19" />
@@ -49,7 +52,7 @@ const links = [
 	<nav aria-label="Mobile" class="mt-12 flex flex-col text-3xl font-semibold tracking-tight [&>a]:border-b [&>a]:border-taupe/20 [&>a]:py-4">
 		{links.map((l, i) => <a href={l.href} data-menu-link class="menu-item" style={`--i:${i}`}>{l.label}</a>)}
 	</nav>
-	<a href="#contact" data-menu-link style="--i:6" class="menu-item bg-paper text-title hover:bg-mist mt-auto px-4 py-3.5 text-center text-sm font-medium transition-colors">
+	<a href={`${base}#contact`} data-menu-link style="--i:6" class="menu-item bg-paper text-title hover:bg-mist mt-auto px-4 py-3.5 text-center text-sm font-medium transition-colors">
 		Book a call
 	</a>
 </div>

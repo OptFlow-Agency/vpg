@@ -12,34 +12,50 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { fieldCell, fieldLabel, inputControl, selectControl } from "@/lib/field-styles"
+import {
+  ANY,
+  defaultFilters,
+  formatPrice,
+  priceSteps,
+  propertyTypes,
+  toQuery,
+  type Mode,
+} from "@/lib/offers"
 
+type Option = { value: string; label: string }
 type Field =
   | { name: string; label: string; kind: "text"; placeholder: string; type?: string; autoComplete?: string }
-  | { name: string; label: string; kind: "select"; options: string[] }
+  | { name: string; label: string; kind: "select"; options: Option[] }
 
-const types = ["Any type", "House", "Villa", "Apartment", "Penthouse", "Land"]
+const typeOptions: Option[] = propertyTypes.map((t) => ({ value: t, label: t }))
+const anyType: Option = { value: ANY, label: "Any type" }
+const budgetOptions = (mode: Mode): Option[] => [
+  { value: ANY, label: "No limit" },
+  ...priceSteps[mode].map((n) => ({ value: String(n), label: formatPrice(n) })),
+]
 
-const tabs: { id: string; label: string; cta: string; target: string; fields: Field[] }[] = [
+const tabs: { id: string; label: string; cta: string; mode?: Mode; target?: string; fields: Field[] }[] = [
   {
     id: "buy",
     label: "Buy",
     cta: "Search homes",
-    target: "#properties",
+    mode: "buy",
     fields: [
       { name: "location", label: "Location", kind: "text", placeholder: "City, area or address" },
-      { name: "type", label: "Property type", kind: "select", options: types },
-      { name: "budget", label: "Max price", kind: "select", options: ["No limit", "$500,000", "$1,000,000", "$2,000,000", "$5,000,000+"] },
+      { name: "type", label: "Property type", kind: "select", options: [anyType, ...typeOptions] },
+      { name: "budget", label: "Max price", kind: "select", options: budgetOptions("buy") },
     ],
   },
   {
     id: "rent",
     label: "Rent",
     cta: "Search rentals",
-    target: "#properties",
+    mode: "rent",
     fields: [
       { name: "location", label: "Location", kind: "text", placeholder: "City, area or address" },
-      { name: "type", label: "Property type", kind: "select", options: types },
-      { name: "budget", label: "Max rent / month", kind: "select", options: ["No limit", "$1,500", "$3,000", "$5,000", "$10,000+"] },
+      { name: "type", label: "Property type", kind: "select", options: [anyType, ...typeOptions] },
+      { name: "budget", label: "Max rent / month", kind: "select", options: budgetOptions("rent") },
     ],
   },
   {
@@ -49,25 +65,32 @@ const tabs: { id: string; label: string; cta: string; target: string; fields: Fi
     target: "#contact",
     fields: [
       { name: "address", label: "Property address", kind: "text", placeholder: "Where is your property?", autoComplete: "street-address" },
-      { name: "type", label: "Property type", kind: "select", options: types.slice(1) },
+      { name: "type", label: "Property type", kind: "select", options: typeOptions },
       { name: "email", label: "Your email", kind: "text", type: "email", placeholder: "name@email.com", autoComplete: "email" },
     ],
   },
 ]
 
-const cell = "flex flex-col gap-1.5"
-const labelCls = "text-subtitle text-xs font-medium lg:text-sm"
-const control =
-  "text-title h-11 w-full rounded-none border-input bg-white px-3 text-sm font-medium shadow-none lg:text-base"
-
 export default function SearchForm() {
   const [tab, setTab] = React.useState("buy")
 
-  function onSubmit(target: string) {
-    return (e: React.FormEvent) => {
+  function onSubmit(t: (typeof tabs)[number]) {
+    return (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
-      // No search backend yet: send people to the matching section.
-      const el = document.querySelector<HTMLElement>(target)
+      if (t.mode) {
+        const data = new FormData(e.currentTarget)
+        const query = toQuery({
+          ...defaultFilters,
+          mode: t.mode,
+          location: String(data.get("location") ?? ""),
+          type: String(data.get("type") ?? ANY),
+          max: String(data.get("budget") ?? ANY),
+        })
+        window.location.assign(`/offers?${query}`)
+        return
+      }
+      // No valuation backend yet: send people to the contact section.
+      const el = t.target && document.querySelector<HTMLElement>(t.target)
       if (!el) return
       window.lenis ? window.lenis.scrollTo(el) : el.scrollIntoView({ behavior: "smooth" })
     }
@@ -101,28 +124,25 @@ export default function SearchForm() {
         >
           <form
             noValidate
-            onSubmit={onSubmit(t.target)}
+            onSubmit={onSubmit(t)}
             className="grid gap-4 p-5 md:grid-cols-3 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end lg:p-6"
           >
             {t.fields.map((f) => {
               const id = `${t.id}-${f.name}`
               return (
-                <div key={f.name} className={cell}>
-                  <Label htmlFor={id} className={labelCls}>
+                <div key={f.name} className={fieldCell}>
+                  <Label htmlFor={id} className={fieldLabel}>
                     {f.label}
                   </Label>
                   {f.kind === "select" ? (
-                    <Select name={f.name} defaultValue={f.options[0]}>
-                      <SelectTrigger
-                        id={id}
-                        className={`${control} justify-between data-[size=default]:h-11 [&_svg]:text-teal`}
-                      >
+                    <Select name={f.name} defaultValue={f.options[0].value}>
+                      <SelectTrigger id={id} className={selectControl}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="rounded-none">
                         {f.options.map((o) => (
-                          <SelectItem key={o} value={o} className="rounded-none">
-                            {o}
+                          <SelectItem key={o.value} value={o.value} className="rounded-none">
+                            {o.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -134,7 +154,7 @@ export default function SearchForm() {
                       type={f.type ?? "text"}
                       autoComplete={f.autoComplete ?? "off"}
                       placeholder={f.placeholder}
-                      className={`${control} placeholder:text-taupe md:text-sm lg:text-base`}
+                      className={inputControl}
                     />
                   )}
                 </div>

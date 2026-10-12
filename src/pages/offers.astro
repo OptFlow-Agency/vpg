@@ -1,0 +1,49 @@
+---
+import { getImage } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import OffersExplorer from "../components/OffersExplorer";
+import { offers } from "../data/offers";
+import mapPin from "../assets/icons/map-pin.svg?raw";
+import building from "../assets/icons/building.svg?raw";
+import sunset from "../assets/modern-sunset-villa.jpg";
+import archway from "../assets/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg";
+import hero from "../assets/villa.png";
+
+// Cards render in a React island, so optimise the images here and pass plain URLs.
+const sources = { sunset, archway, hero };
+const images = Object.fromEntries(
+  await Promise.all(
+    Object.entries(sources).map(async ([key, src]) => {
+      const { src: url, attributes } = await getImage({ src, width: 640, format: "webp", quality: 75 });
+      return [key, { src: url, width: attributes.width as number, height: attributes.height as number }];
+    }),
+  ),
+);
+---
+
+<Layout
+	title="Available Offers — VPG"
+	description="Browse homes for sale and rent. Filter by location, availability and price range."
+>
+	<div class="from-paper via-paper to-sand bg-gradient-to-b">
+		<Header />
+		<section class="mx-auto max-w-4xl px-5 pt-10 pb-16 text-center md:px-10 md:pt-16 md:pb-20 lg:px-16">
+			<h1 style="--enter-delay:150ms" class="enter-up text-title text-[1.9rem] leading-[1.08] font-bold tracking-[-0.03em] md:text-5xl lg:text-6xl">
+				Available Offers
+			</h1>
+			<p style="--enter-delay:300ms" class="enter-up text-subtitle mx-auto mt-4 max-w-sm text-xs leading-relaxed md:max-w-md md:text-sm lg:max-w-xl lg:text-base">
+				Filter by location, availability and price to find the property that fits your next move.
+			</p>
+		</section>
+	</div>
+
+	<main class="relative z-20 -mt-10 px-5 pb-20 md:-mt-12 md:px-10 md:pb-28 lg:-mt-14 lg:px-16">
+		<div class="mx-auto max-w-7xl">
+			<OffersExplorer client:only="react" offers={offers} images={images} icons={{ mapPin, building }} />
+		</div>
+	</main>
+
+	<Footer />
+</Layout>
