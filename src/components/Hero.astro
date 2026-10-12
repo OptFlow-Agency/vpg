@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+import heroImage from "../assets/villa.png";
+---
+
+<div class="flex flex-1 flex-col">
+<section class="relative z-10 mx-auto max-md:my-auto max-w-7xl px-5 md:px-10 lg:px-16">
+  <div class="grid gap-5 pt-6 md:pt-10 lg:pt-16 sm:grid-cols-[1.4fr_1fr] sm:gap-x-6 md:gap-x-10 lg:grid-cols-[1.6fr_1fr]">
+    <h1 style="--enter-delay:150ms" class="enter-up text-title text-[1.9rem] leading-[1.08] font-bold tracking-[-0.03em] sm:text-3xl md:text-5xl lg:text-6xl">
+      Find a Place You’ll Love to Call Home.
+    </h1>
+    <p style="--enter-delay:300ms" class="enter-up text-subtitle max-w-xs text-xs leading-relaxed sm:col-start-2 sm:row-start-1 sm:pt-2 md:text-sm lg:max-w-md lg:justify-self-end lg:pt-3 lg:text-base">
+      Premium properties, transparent deals, and expert local guidance to help
+      you navigate your next move with confidence.
+    </p>
+    <a
+      href="#contact"
+      style="--enter-delay:450ms"
+      class="enter-up btn btn-solid justify-self-start sm:mt-1"
+    >
+      Book a call
+      <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </a>
+  </div>
+</section>
+<div
+  class="relative h-[84vw] shrink-0 overflow-hidden md:mt-4 md:h-auto md:min-h-[22rem] md:flex-1 lg:mt-0">
+  <Image
+    src={heroImage}
+    alt="Modern white two-storey house with a pool and palm trees"
+    widths={[640, 828, 1080, 1440, 1920]}
+    sizes="(min-width: 768px) 100vw, 150vw"
+    format="webp"
+    quality={70}
+    priority
+    style="--enter-delay:350ms"
+    class="enter-image absolute bottom-0 left-1/2 h-auto w-[150vw] max-w-none -translate-x-[41%] md:inset-0 md:left-0 md:h-full md:w-full md:translate-x-0 md:object-cover md:object-[center_45%]"
+  />
+</div>
+</div>

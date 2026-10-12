@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import mapPin from '../assets/icons/map-pin.svg?raw';
+import building from '../assets/icons/building.svg?raw';
+import villa from '../assets/modern-sunset-villa.jpg';
+
+const properties = [
+	{ name: 'Modern Sunset Villa', location: 'Beverly Hills, CA', beds: 4, baths: 3.5, sqft: 3200, price: 1450000 },
+	{ name: 'Modern Sunset Villa', location: 'Beverly Hills, CA', beds: 4, baths: 3.5, sqft: 3200, price: 1450000 },
+	{ name: 'Modern Sunset Villa', location: 'Beverly Hills, CA', beds: 4, baths: 3.5, sqft: 3200, price: 1450000 },
+	{ name: 'Modern Sunset Villa', location: 'Beverly Hills, CA', beds: 4, baths: 3.5, sqft: 3200, price: 1450000 },
+];
+
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const num = new Intl.NumberFormat('en-US');
+---
+
+<section id="properties" class="px-5 py-20 md:px-10 md:py-28 lg:px-16">
+	<div data-reveal class="reveal mx-auto max-w-4xl text-center">
+		<h2 class="text-title leading-[1.1] text-2xl font-semibold tracking-[-0.02em] md:text-4xl lg:text-5xl">
+			Hand picked Properties <br class="hidden sm:block" />&amp; Featured Offers
+		</h2>
+		<p class="text-subtitle mx-auto mt-4 max-w-sm text-xs leading-relaxed md:max-w-md md:text-sm lg:max-w-xl lg:text-base">
+			Browse our curated selection of top-performing homes and prime real estate opportunities.
+		</p>
+	</div>
+
+	<ul class="mx-auto mt-10 grid max-w-7xl gap-6 md:mt-14 md:grid-cols-2 xl:grid-cols-4">
+		{
+			properties.map((p, i) => (
+				<li data-reveal class="reveal group shadow-card hover:shadow-lift bg-white transition-shadow duration-500" style={`--reveal-delay:${(i % 2) * 100}ms`}>
+					<div class="overflow-hidden">
+					<Image
+						src={villa}
+						alt={`${p.name} exterior`}
+						widths={[400, 600, 800]}
+						sizes="(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw"
+						class="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-105"
+					/>
+					</div>
+					<div class="p-5">
+						<h3 class="text-title text-base font-semibold lg:text-lg">{p.name}</h3>
+						<p class="text-subtitle mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.65rem] lg:text-xs">
+							<span class="inline-flex items-center gap-1">
+								<span class="shrink-0" set:html={mapPin} />
+								{p.location}
+							</span>
+							<span>{p.beds} Beds</span>
+							<span>{p.baths} Baths</span>
+							<span class="inline-flex items-center gap-1">
+								<span class="shrink-0" set:html={building} />
+								{num.format(p.sqft)} Sq Ft
+							</span>
+						</p>
+						<div class="border-stone mt-5 flex items-center justify-between border-t pt-5">
+							<span class="text-title text-sm font-semibold tracking-tight tabular-nums lg:text-lg">{usd.format(p.price)}</span>
+							<a
+								href="#contact"
+								class="btn btn-solid"
+							>
+								Book Now
+							</a>
+						</div>
+					</div>
+				</li>
+			))
+		}
+	</ul>
+
+	<div data-reveal class="reveal mt-10 flex justify-center">
+		<a
+			href="#properties"
+			class="btn btn-ghost"
+		>
+			View All Available Properties
+			<svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+		</a>
+	</div>
+</section>

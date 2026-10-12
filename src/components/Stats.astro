@@ -1,0 +1,36 @@
+---
+const stats = [
+  { label: "Total Property Value Sold", prefix: "$", value: 450, suffix: "M+" },
+  { label: "Happy Families Moved", value: 1200, suffix: "+" },
+  { label: "Average Time on Market", value: 15, suffix: " Days" },
+  { label: "Client Satisfaction Rate", value: 98, suffix: "%" },
+];
+---
+
+<section
+  id="about"
+  class="on-dark bg-abyss text-paper px-5 py-20 md:px-10 md:py-28 lg:px-16"
+>
+  <div data-reveal class="reveal mx-auto max-w-4xl text-center">
+    <h2 class="leading-[1.1] text-2xl font-semibold tracking-[-0.02em] md:text-4xl lg:text-5xl">
+      Why Buyers &amp; Sellers Choose Us
+    </h2>
+    <p class="text-white/75 mx-auto mt-4 max-w-sm text-xs leading-relaxed md:max-w-md md:text-sm lg:max-w-xl lg:text-base">
+      Real figures that demonstrate our market expertise and commitment to
+      customer satisfaction.
+    </p>
+  </div>
+
+  <dl class="border-taupe/20 mx-auto mt-14 grid max-w-6xl grid-cols-2 border-t text-center md:mt-20 md:grid-cols-4 [&>div]:border-taupe/20 [&>div]:px-2 md:[&>div]:px-4 [&>div]:py-8 md:[&>div]:py-10 [&>div:nth-child(odd)]:border-r [&>div:nth-child(-n+2)]:border-b md:[&>div]:border-r md:[&>div:nth-child(-n+2)]:border-b-0 md:[&>div:last-child]:border-r-0">
+    {stats.map((s, i) => (
+      <div data-reveal class="reveal flex flex-col justify-end" style={`--reveal-delay:${i * 100}ms`}>
+        <dt class="text-mist flex min-h-[2lh] items-end justify-center text-xs md:min-h-0 md:text-sm lg:text-base">{s.label}</dt>
+        <dd class="mt-3 text-[1.65rem] font-semibold whitespace-nowrap sm:text-3xl tracking-[-0.03em] tabular-nums md:text-4xl lg:text-5xl">
+          {s.prefix}
+          <span data-value={s.value}>{s.value.toLocaleString("en-US")}</span>
+          {s.suffix}
+        </dd>
+      </div>
+    ))}
+  </dl>
+</section>

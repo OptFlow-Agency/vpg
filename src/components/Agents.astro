@@ -1,0 +1,112 @@
+---
+import { Image } from "astro:assets";
+import sarah from "../assets/sarah.png";
+import david from "../assets/david.png";
+import elena from "../assets/elena.png";
+import avi from "../assets/avi.png";
+
+const agents = [
+  {
+    name: "Sarah Jenkins",
+    role: "Managing Director & Founder",
+    photo: sarah,
+    phone: "+212 6 00 0000",
+    email: "sarah@vpg.com",
+  },
+  {
+    name: "David Chen",
+    role: "Senior Property Specialist",
+    photo: david,
+    phone: "+212 6 00 0000",
+    email: "david@vpg.com",
+  },
+  {
+    name: "Elena Rodriguez",
+    role: "Buyer’s Agent & Relocation Specialist",
+    photo: elena,
+    phone: "+212 6 00 0000",
+    email: "elena@vpg.com",
+  },
+  {
+    name: "Avi Chen",
+    role: "Real Estate Broker",
+    photo: avi,
+    phone: "+212 6 00 0000",
+    email: "avi@vpg.com",
+  },
+];
+---
+
+<section id="agents" class="px-5 py-20 md:px-10 md:py-28 lg:px-16">
+  <div data-reveal class="reveal mx-auto max-w-4xl text-center">
+    <h2 class="text-title leading-[1.1] text-2xl font-semibold tracking-[-0.02em] md:text-4xl lg:text-5xl">
+      Experienced Agents <br class="hidden sm:block" />
+      Working for You
+    </h2>
+    <p class="text-subtitle mx-auto mt-4 max-w-xs text-xs leading-relaxed md:max-w-sm md:text-sm lg:max-w-md lg:text-base">
+      Our local market experts are dedicated to helping you make informed real
+      estate decisions.
+    </p>
+  </div>
+
+  <ul class="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-5 sm:grid-cols-2 md:mt-14 lg:max-w-7xl lg:grid-cols-4">
+    {agents.map((a, i) => (
+      <li
+        data-reveal
+        class="reveal group shadow-card hover:shadow-lift bg-white transition-shadow duration-500"
+        style={`--reveal-delay:${(i % 2) * 100}ms`}
+      >
+        <div class="from-stone to-sand aspect-[2/1] overflow-hidden bg-gradient-to-b">
+          <Image
+            src={a.photo}
+            alt={a.name}
+            widths={[300, 500]}
+            sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+            class="mx-auto h-full object-contain object-bottom transition-transform duration-[900ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.04]"
+          />
+        </div>
+        <div class="p-5">
+          <h3 class="text-title text-base font-semibold lg:text-lg">
+            {a.name}
+          </h3>
+          <p class="text-subtitle mt-0.5 text-[0.65rem] lg:text-xs">{a.role}</p>
+          <div class="mt-3 flex gap-2">
+            <a
+              href={`tel:${a.phone.replace(/\s/g, "")}`}
+              class="btn btn-solid flex-1 !px-3 !py-3 !text-[0.65rem] lg:!text-xs"
+            >
+              <svg
+                class="size-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <path d="M5 4h3l2 5-2.5 1.5a11 11 0 005 5L14 13l5 2v3a2 2 0 01-2 2A14 14 0 013 6a2 2 0 012-2z" />
+              </svg>
+              {a.phone}
+            </a>
+            <a
+              href={`mailto:${a.email}`}
+              aria-label={`Email ${a.name}`}
+              class="btn btn-ghost w-11 shrink-0 !p-0"
+            >
+              <svg
+                class="size-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M16 8v5a3 3 0 006 0v-1a10 10 0 10-4 8" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>

@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import house from '../assets/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg';
+import family from '../assets/istockphoto-881508444-612x612.jpg';
+---
+
+<section class="px-5 py-20 md:px-10 md:py-28 lg:px-16">
+	<div class="mx-auto flex max-w-2xl flex-col items-center text-center lg:max-w-6xl lg:flex-row lg:items-center lg:justify-center lg:gap-20 lg:text-left">
+		<div data-reveal class="reveal relative w-full max-w-xs shrink-0 lg:max-w-md">
+			<Image
+				src={house}
+				alt=""
+				aria-hidden="true"
+				class="absolute -top-3 -left-3 sm:-top-4 sm:-left-6 aspect-square w-[85%] rounded-3xl object-cover blur-[3px]"
+			/>
+			<Image
+				src={family}
+				alt="A happy family holding the keys to their new home"
+				class="relative ml-auto aspect-square w-[85%] rounded-3xl object-cover object-top shadow-lift"
+			/>
+		</div>
+
+		<div data-reveal class="reveal mt-8 lg:mt-0 lg:max-w-xl">
+			<h2 class="text-title leading-[1.1] text-2xl font-semibold tracking-[-0.02em] md:text-4xl lg:text-5xl">
+				Smart Selection of premium <br class="hidden sm:block" />real estate
+			</h2>
+			<p class="text-subtitle mx-auto mt-3 max-w-xs lg:mx-0 text-xs leading-relaxed md:text-sm lg:max-w-md lg:text-base">
+				Explore verified homes and top market deals designed to fit your next big move.
+			</p>
+			<div class="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+				<a href="#properties" class="btn btn-solid">
+					Explore Properties
+				</a>
+				<a
+					href="#contact"
+					class="btn btn-ghost"
+				>
+					Get Consulation
+				</a>
+			</div>
+		</div>
+	</div>
+</section>

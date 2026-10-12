@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Search from "../components/Search.astro";
+import Stats from "../components/Stats.astro";
+import Properties from "../components/Properties.astro";
+import Agents from "../components/Agents.astro";
+import Cta from "../components/Cta.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout title="VPG — Find a Place You’ll Love to Call Home">
+  <div class="from-paper via-paper to-sand flex min-h-svh flex-col">
+    <Header />
+    <Hero />
+  </div>
+  <main>
+    <Search />
+    <Stats />
+    <Properties />
+    <Agents />
+    <Cta />
+  </main>
+  <Footer />
+</Layout>

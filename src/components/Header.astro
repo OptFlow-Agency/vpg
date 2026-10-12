@@ -1,0 +1,80 @@
+---
+import menuIcon from '../assets/menu-icon.svg?raw';
+
+const links = [
+	{ label: 'Home', href: '#top' },
+	{ label: 'Properties', href: '#properties' },
+	{ label: 'Services', href: '#services' },
+	{ label: 'About', href: '#about' },
+	{ label: 'Testimonials', href: '#testimonials' },
+	{ label: 'Contact', href: '#contact' },
+];
+---
+
+<header id="top" class="enter-down mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-6 md:px-10 lg:px-16">
+	<a href="#top" class="text-title text-lg font-semibold tracking-[0.18em]">VPG</a>
+
+	<nav aria-label="Primary" class="hidden items-center gap-8 text-sm font-medium md:flex lg:gap-10 lg:text-base">
+		{links.slice(1, -1).map((l) => <a href={l.href} class="link-draw text-title">{l.label}</a>)}
+		<a href="#contact" class="btn btn-solid">Contact</a>
+	</nav>
+
+	<button
+		type="button"
+		id="menu-toggle"
+		aria-label="Open menu"
+		aria-expanded="false"
+		aria-controls="mobile-menu"
+		class="-mr-2 p-2 md:hidden [&>svg]:size-8"
+		set:html={menuIcon}
+	/>
+</header>
+
+<div
+	id="mobile-menu"
+	role="dialog"
+	aria-modal="true"
+	aria-label="Menu"
+	inert
+	class="menu-panel on-dark bg-abyss text-paper fixed inset-0 z-50 flex flex-col px-5 py-6 md:hidden"
+>
+	<div class="flex items-center justify-between">
+		<a href="#top" class="text-lg font-semibold tracking-[0.18em]" data-menu-link>VPG</a>
+		<button type="button" id="menu-close" aria-label="Close menu" class="-mr-2 p-2">
+			<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+				<path d="M5 5l14 14M19 5L5 19" />
+			</svg>
+		</button>
+	</div>
+	<nav aria-label="Mobile" class="mt-12 flex flex-col text-3xl font-semibold tracking-tight [&>a]:border-b [&>a]:border-taupe/20 [&>a]:py-4">
+		{links.map((l, i) => <a href={l.href} data-menu-link class="menu-item" style={`--i:${i}`}>{l.label}</a>)}
+	</nav>
+	<a href="#contact" data-menu-link style="--i:6" class="menu-item bg-paper text-title hover:bg-mist mt-auto px-4 py-3.5 text-center text-sm font-medium transition-colors">
+		Book a call
+	</a>
+</div>
+
+<script>
+	const menu = document.getElementById('mobile-menu')!;
+	const toggle = document.getElementById('menu-toggle')!;
+	const close = document.getElementById('menu-close')!;
+
+	function setOpen(open: boolean) {
+		menu.toggleAttribute('data-open', open);
+		menu.inert = !open;
+		toggle.setAttribute('aria-expanded', String(open));
+		document.body.style.overflow = open ? 'hidden' : '';
+		open ? window.lenis?.stop() : window.lenis?.start();
+		(open ? close : toggle).focus();
+	}
+
+	toggle.addEventListener('click', () => setOpen(true));
+	close.addEventListener('click', () => setOpen(false));
+	menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape' && menu.hasAttribute('data-open')) setOpen(false);
+	});
+	window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+		if (e.matches && menu.hasAttribute('data-open')) setOpen(false);
+	});
+</script>

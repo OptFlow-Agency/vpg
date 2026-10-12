@@ -1,0 +1,81 @@
+---
+import instagram from '../assets/icons/social-media/instagram.svg?raw';
+import facebook from '../assets/icons/social-media/facebook.svg?raw';
+import linkedin from '../assets/icons/social-media/linkedin.svg?raw';
+
+const columns = [
+	[
+		{ label: 'Home', href: '#top' },
+		{ label: 'About Us', href: '#about' },
+		{ label: 'Featured', href: '#properties' },
+		{ label: 'Listings', href: '#properties' },
+	],
+	[
+		{ label: 'Our Team', href: '#agents' },
+		{ label: 'Market', href: '#about' },
+		{ label: 'Insights', href: '#about' },
+		{ label: 'Contact Us', href: '#contact' },
+	],
+];
+
+const socials = [
+	{ label: 'Instagram', href: '#', icon: instagram },
+	{ label: 'Facebook', href: '#', icon: facebook },
+	{ label: 'LinkedIn', href: '#', icon: linkedin },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer id="contact" class="on-dark bg-abyss text-paper px-5 pt-16 pb-10 md:px-10 lg:px-16">
+	<div class="mx-auto max-w-7xl">
+		<div class="grid gap-8 md:grid-cols-[1.5fr_1fr]">
+			<div>
+				<a href="#top" class="text-xl font-semibold tracking-[0.18em]">VPG</a>
+				<p class="mt-3 max-w-xs text-[0.7rem] leading-relaxed text-stone/70 lg:text-sm">
+					A full-service real estate brokerage specializing in residential, commercial, and luxury property
+					investments.
+				</p>
+			</div>
+			<nav aria-label="Footer" class="grid grid-cols-2 gap-6 md:justify-self-end md:gap-16">
+				{
+					columns.map((col) => (
+						<ul class="flex flex-col gap-3 text-[0.7rem] text-stone/70 lg:text-sm">
+							{col.map((l) => (
+								<li>
+									<a href={l.href} class="hover:text-mist transition-colors">
+										{l.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					))
+				}
+			</nav>
+		</div>
+
+		<address class="border-taupe/20 mt-12 flex flex-col gap-2 border-t pt-8 text-[0.7rem] text-stone/70 not-italic lg:text-sm">
+			<span>Address: 100 Main Street, Suite 400, Metropolitan City</span>
+			<span>Phone: <a href="tel:+15552345678" class="hover:text-mist transition-colors">+1 (555) 234-5678</a></span>
+			<span>Email: <a href="mailto:contact@apexrealestate.com" class="hover:text-mist transition-colors">contact@apexrealestate.com</a></span>
+			<span>Working Hours: Mon – Fri: 9:00 AM – 6:00 PM | Sat: 10:00 AM – 2:00 PM</span>
+		</address>
+
+		<div class="border-taupe/20 mt-10 flex flex-col items-center gap-4 border-t pt-8 text-center text-[0.7rem] lg:text-sm">
+			<ul class="flex items-center gap-5">
+				{
+					socials.map((s) => (
+						<li>
+							<a href={s.href} aria-label={s.label} class="hover:text-mist block opacity-80 transition-opacity hover:opacity-100 [&>svg]:size-4 lg:[&>svg]:size-5" set:html={s.icon} />
+						</li>
+					))
+				}
+			</ul>
+			<p class="text-stone/80">© {year} Apex Real Estate Inc. All rights reserved.</p>
+			<p class="text-[0.6rem] text-taupe lg:text-xs">
+				<a href="#" class="hover:text-mist transition-colors">Privacy Policy</a> | <a href="#" class="hover:text-mist transition-colors">Terms of Service</a> |{" "}
+				<a href="#" class="hover:text-mist transition-colors">Cookie Settings</a>
+			</p>
+		</div>
+	</div>
+</footer>
